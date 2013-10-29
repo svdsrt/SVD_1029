@@ -1,7 +1,6 @@
-SVD_1029
+基于大规模数据挖掘用户推荐系统
 ========
 
-#基于大规模数据挖掘用户推荐系统
 
 This is a Student Research Training(SRT) project of Tsinghua University,IE.
 
