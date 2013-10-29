@@ -7,7 +7,7 @@ private:
 	Matrix * T;
 	double delta;
 public:
-	//HouseHold();
+	HouseHold();
 	
 	void HouseHolder(Vector v,int n);
 };

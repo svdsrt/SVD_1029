@@ -23,17 +23,16 @@ int _tmain(int argc, _TCHAR* argv[])
 	Matrix U(m,m),V(n,n);
 	Matrix A(m,n);
 	Matrix tU(n,n),tV(n,n),temp(n,n);
-	for(int i=0;i<m;i++)
-		for(int j=0;j<n;j++)
-			infile>>A.matrix[i][j];
+	Matrix A("InputMatrix1.txt");
+
 	Vector B1(n);
 	Vector B2(n);
 
 
-	BigDiag(A,B1,B2,U,V,m,n);
+	BiDiag(A,B1,B2,U,V,m,n);
 
-	B1.Print();
-	B2.Print();
+	B1.print();
+	B2.print();
 
 
 	int p=0,q=0,flag=0;
@@ -140,7 +139,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	return 0;
 
 }
-/*
+
 void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n)
 {
 	Matrix P(m,m),H(n,n),tH(n,n);
@@ -151,7 +150,7 @@ void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n)
 		tempU.HCol(A,num);
 		tempU.print();
 		Matrix temp1(m-num,m-num);
-		HouseHold T1(temp1);
+		HouseHold T1();
 		T1.HouseHolder(tempU,m-num);
 		B1[num]=T1.delta;
 		Matrix tP(m);
@@ -192,4 +191,4 @@ void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n)
 	tempU1.Print();
 	tempU2.Print();
 
-}*/
+}

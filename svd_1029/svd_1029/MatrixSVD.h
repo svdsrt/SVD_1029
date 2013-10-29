@@ -44,7 +44,7 @@ private:
 public:
 	Vector(int num); //构造n维向量
 
-	double &operator[](int index);//返回向量中第index维的值
+	double &operator[](int index);//返回向量中第index维的值，从0开始
 	int N();//返回向量维数
 
 	void Add(Vector A);//加
