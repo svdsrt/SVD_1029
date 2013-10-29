@@ -150,9 +150,9 @@ void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n)
 		tempU.HCol(A,num);
 		tempU.print();
 		Matrix temp1(m-num,m-num);
-		HouseHold T1();
-		T1.HouseHolder(tempU,m-num);
-		B1[num]=T1.delta;
+		HouseHold T1(m-num);
+		T1.HouseHolder(tempU);
+		B1[num]=T1.Delta();
 		Matrix tP(m);
 		for(int i=0;i<m-num;i++)
 			for(int j=0;j<m-num;j++)
@@ -167,11 +167,11 @@ void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n)
 		tempV.HCol(A,num);
 		tempV.print();
 		Matrix temp2(n-1-num,n-num-1);
-		HouseHold T2(temp2);
-		T2.HouseHolder(tempV,n-num-1);
-		B2[num+1]=T2.delta;
+		HouseHold T2(n-1-num);
+		T2.HouseHolder(tempV);
+		B2[num+1]=T2.Delta();
 		Matrix tH(n,n);
-		Unit(tH,n);
+		Matrix tH(n);
 		for(int i=0;i<n-num-1;i++)
 			for(int j=0;j<n-num-1;j++)
 				tH.matrix[num][num]=T2.T.matrix[i][j];
