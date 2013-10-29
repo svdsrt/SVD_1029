@@ -8,13 +8,30 @@
 #include "HouseHold.h"
 #include <math.h>
 
+HouseHold::HouseHold()
+{
+	T=NULL;
+	delta=0;
+}
 
-void HouseHold::HouseHolder(Vector v,int n)
+HouseHold::HouseHold(int n)
+{
+	Matrix M(n,n);
+	T=&M;
+	delta=0;
+}
+
+double HouseHold::Delta()
+{
+	return delta;
+}
+
+void HouseHold::HouseHolder(Vector v)
 {
 	delta=v.modular();
 	if(delta==0)
 	{
-		Matrix temp(n);
+		Matrix temp(v.N());
 		T=&temp;
 	}
 	else
@@ -22,13 +39,13 @@ void HouseHold::HouseHolder(Vector v,int n)
 	    v.set(0,v[0]-delta);
 	    if(v.modular()==0)//以后要改
 		{
-		Matrix temp(n);
+		Matrix temp(v.N());
 		T=&temp;
 	    }
 	    else 
 	    v.Normalize();
 	    v.Span(*T);
-	    Matrix temp(n);
+	    Matrix temp(v.N());
 		T->NumProd(2);
 	    temp.Minus(*T);
 	}

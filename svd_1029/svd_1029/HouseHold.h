@@ -7,8 +7,9 @@ private:
 	Matrix * T;
 	double delta;
 public:
-	HouseHold();
-	
-	void HouseHolder(Vector v,int n);
+	HouseHold();//构造函数
+	HouseHold(int n);//构造n*n的方阵的household
+	double Delta();//返回delta
+	void HouseHolder(Vector v);
 };
 #endif // ! HOUSEHOLD_H
