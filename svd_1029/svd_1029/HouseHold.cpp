@@ -26,6 +26,11 @@ double HouseHold::Delta()
 	return delta;
 }
 
+Matrix * HouseHold ::TMatrix()
+{
+	return T;
+}
+
 void HouseHold::HouseHolder(Vector v)
 {
 	delta=v.modular();
