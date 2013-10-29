@@ -20,7 +20,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	fstream infile("InputMatrix1.txt");
 	infile>>m;
 	infile>>n;
-	Matrix U(m,m),V(n,n);
+	Matrix *U=new Matrix(m,m);
+	Matrix *V=new Matrix(n,n);
 	Matrix A(m,n);
 	Matrix tU(n,n),tV(n,n),temp(n,n);
 	Matrix A("InputMatrix1.txt");
@@ -127,12 +128,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 
-	U.Print();
+	U.print();
 	cout<<endl;
-	B1.Print();
-	B2.Print();
+	B1.print();
+	B2.print();
 	cout<<endl;
-	V.Print();
+	V.print();
 
 
 	system("pause");
@@ -140,55 +141,65 @@ int _tmain(int argc, _TCHAR* argv[])
 
 }
 
-void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n)
+void BiDiag(Matrix A,Vector B1,Vector B2,Matrix *U, Matrix *V,int m,int n)
 {
-	Matrix P(m,m),H(n,n),tH(n,n);
+	Matrix *P=new Matrix(m,m);
+	Matrix *H=new Matrix(n,n);
+	Matrix *swap=NULL;
 	int num=0;
 	for(num=0;num<n-2;num++)
 	{
 		Vector tempU(m-num);
 		tempU.HCol(A,num);
 		tempU.print();
-		Matrix temp1(m-num,m-num);
 		HouseHold T1(m-num);
 		T1.HouseHolder(tempU);
 		B1[num]=T1.Delta();
 		Matrix tP(m);
 		for(int i=0;i<m-num;i++)
 			for(int j=0;j<m-num;j++)
-				tP.set(num,num,T1.T.matrix[i*(m-num)+j]);
-	    P.DotProd(U,tP);
-		tP=U;
+				tP.set(num+i,num+j,T1.TMatrix()->a(i,j));
+	    U->DotProd(*P,tP);
+		swap=U;
 		U=P;
-		P=tP;
+		P=swap;
 
 
 		Vector tempV(n-num-1);
 		tempV.HCol(A,num);
 		tempV.print();
-		Matrix temp2(n-1-num,n-num-1);
 		HouseHold T2(n-1-num);
 		T2.HouseHolder(tempV);
 		B2[num+1]=T2.Delta();
-		Matrix tH(n,n);
 		Matrix tH(n);
 		for(int i=0;i<n-num-1;i++)
 			for(int j=0;j<n-num-1;j++)
-				tH.matrix[num][num]=T2.T.matrix[i][j];
-		H.DotProd(V,tH);
-		tH=V;
+				tH.set(num+i,num+j,T2.TMatrix()->a(i,j));
+		V->DotProd(*H,tH);
+		swap=V;
 		V=H;
-		H=tH;
+		H=swap;
 	}
 
 	Vector tempU1(m-n+2),tempU2(m-n+2);
 	int num2=num;
 	for(;num2<m;num2++)
 	{
-		tempU1.vector[num2-num]=A.matrix[num2][n-2];
-		tempU2.vector[num2-num]=A.matrix[num2][n-1];
+		tempU1.set(num2-num,A.a(num2,n-2));
+		tempU2.set(num2-num,A.a(num2,n-1));
 	}
 	tempU1.print();
 	tempU2.print();
 
+	HouseHold T3(m-n+2);
+	T3.HouseHolder(tempU1);
+		B1[n-2]=T3.Delta();
+		Matrix tP3(m);
+		for(int i=0;i<n-num-1;i++)
+			for(int j=0;j<n-num-1;j++)
+				tP3.set(num+i,num+j,T3.TMatrix()->a(i,j));
+		U->DotProd(*P,tP3);
+		swap=U;
+		U=P;
+		P=swap;
 }
