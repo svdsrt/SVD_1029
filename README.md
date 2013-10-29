@@ -6,7 +6,7 @@ This is a Student Research Training(SRT) project of Tsinghua University,IE.
 
 We are aimed at providing some information based on data large mining with SVD algorithm.
 
-[SVD in github](https://github.com/clarkwangbc/SVD)
+[SVD in github](https://github.com/svdsrt/SVD_1029)
 
 在日常生活中，以电影为例，我们每个人对每部看过的电影都有一个评价，这个评价可以以分数来衡量。所以存在一个用户-物品的评分矩阵。这个矩阵是稀疏的，因为数据库中的所有用户看过所有影片这样的情况是不可能的。那么，这个问题的核心就是如何填满这个矩阵，由现有的实际评分矩阵去预测理论的评分矩阵。
 Cij表示第i个用户对第j个物品的理论评分，也就是我们预测的喜好程度。
