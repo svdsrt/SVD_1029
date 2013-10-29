@@ -16,12 +16,12 @@ void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n);//���Խ
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//initalize
-	int m,n;//m是行数，n是列�?
+	int m,n;
 	fstream infile("InputMatrix1.txt");
 	infile>>m;
 	infile>>n;
 	Matrix U(m,m),V(n,n);
-	Matrix A(m,n);//此处默认m>=n
+	Matrix A(m,n);
 	Matrix tU(n,n),tV(n,n),temp(n,n);
 	for(int i=0;i<m;i++)
 		for(int j=0;j<n;j++)
@@ -29,16 +29,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	Vector B1(n);
 	Vector B2(n);
 
-	//二对角化
+
 	BigDiag(A,B1,B2,U,V,m,n);
 
 	B1.Print();
 	B2.Print();
 
-	//U.Print();
-	//V.Print();
 
-	//收敛检�?
 	int p=0,q=0,flag=0;
 	double e=0;
 	cout<<"请输入误差范�?";
