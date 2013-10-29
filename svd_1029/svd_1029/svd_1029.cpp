@@ -199,6 +199,19 @@ void BiDiag(Matrix A,Vector B1,Vector B2,Matrix *U, Matrix *V,int m,int n)
 			for(int j=0;j<n-num-1;j++)
 				tP3.set(num+i,num+j,T3.TMatrix()->a(i,j));
 		U->DotProd(*P,tP3);
+		//»¹ÒªÂð£¿
+		swap=U;
+		U=P;
+		P=swap;
+
+	HouseHold T3(m-n+2);
+	T3.HouseHolder(tempU2);
+		B1[n-1]=T3.Delta();
+		Matrix tP3(m);
+		for(int i=0;i<n-num-1;i++)
+			for(int j=0;j<n-num-1;j++)
+				tP3.set(num+i,num+j,T3.TMatrix()->a(i,j));
+		U->DotProd(*P,tP3);
 		swap=U;
 		U=P;
 		P=swap;
