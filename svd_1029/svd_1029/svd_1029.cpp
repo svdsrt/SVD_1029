@@ -17,14 +17,13 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	//initalize
 	int m,n;
-	fstream infile("InputMatrix1.txt");
-	infile>>m;
-	infile>>n;
+	Matrix A("InputMatrix1.txt");
+	m=A.M();
+	n=A.N();
 	Matrix *U=new Matrix(m,m);
 	Matrix *V=new Matrix(n,n);
-	Matrix A(m,n);
 	Matrix tU(n,n),tV(n,n),temp(n,n);
-	Matrix A("InputMatrix1.txt");
+	
 
 	Vector B1(n);
 	Vector B2(n);
@@ -36,7 +35,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	B2.print();
 
 
-	int p=0,q=0,flag=0;
+	/*int p=0,q=0,flag=0;
 	double e=0;
 	cout<<"请输入误差范�?";
 	cin>>e;
@@ -52,9 +51,9 @@ int _tmain(int argc, _TCHAR* argv[])
 			B2.vector[i]=0;
 			flag=1;
 		}
-	}
+	}*/
 
-	while(flag==0)
+	/*while(flag==0)
 	{
 		for(int j=n-1;j>0;j--)
 		{
@@ -125,10 +124,10 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 
 		}
-	}
+	}*/
 
 
-	U.print();
+	U->print();
 	cout<<endl;
 	B1.print();
 	B2.print();
