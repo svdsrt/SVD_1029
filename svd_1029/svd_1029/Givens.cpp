@@ -73,13 +73,28 @@ void Givens::set(double x,double y)
 		}
 }
 
-void Givens::update(Matrix X,int k)
+void Givens::update(Matrix *X,int k)
 {
 	int i=0;
-	for(i=0;i<X.N();i++)
+	for(i=0;i<X->N();i++)
 	{
-		double t=X.a(i,k-1);
-		X.set(i,k-1,c*t-s*X.a(i,k));
-		X.set(i,k,s*t+c*X.a(i,k));
+		double t=X->a(i,k-1);
+		X->set(i,k-1,c*t-s*X->a(i,k));
+		X->set(i,k,s*t+c*X->a(i,k));
 	}
+}
+
+double Givens::getc()
+{
+	return c;
+}
+
+double Givens::gets()
+{
+	return s;
+}
+
+double Givens::getr()
+{
+	return r;
 }
