@@ -79,7 +79,7 @@ void svd::BiDiag()
 	P->Copy(*U);
 	U->DotProd(*P,tP4);
 }
-/*
+
 void svd::CheckConvergence()
 {
 	int p=0,q=0,flag=0;
@@ -132,26 +132,21 @@ void svd::CheckConvergence()
 					}
 					if(flag2==0)
 					{
-						QR or(p,q);
-						Unit(temp,n);
+						QR or(p-q+1);
+						or.Iterative(p,q,B1,B2);
+						Matrix temp1(n);
 						for(int ii=p;ii<=q;ii++)
 							for(int jj=p;jj<=q;jj++)
-								temp.matrix[ii][jj]=svd1.P.matrix[ii-p][jj-p];
-						tU.MatrixMultiply(U,temp);
+								temp1.set(ii,jj,or.P->a(ii-p,jj-p));
+						U->Copy(tU);
+						U->DotProd(tU,temp1);
 
-						temp=U;
-						U=tU;
-						tU=temp;
-
-						Unit(temp,n);
+						Matrix temp2(n);
 						for(int ii=p;ii<=q;ii++)
 							for(int jj=p;jj<=q;jj++)
-								temp.matrix[ii][jj]=svd1.P.matrix[ii-p][jj-p];
-						tV.MatrixMultiply(V,temp);
-
-						temp=V;
-						V=tV;
-						tV=temp;
+								temp2.set(ii,jj,or.Q->a(ii-p,jj-p));
+						V->Copy(tV);
+						tV.DotProd(tV,temp);
 					}
 			}
 			for(int i=1;i<n;i++)
@@ -167,7 +162,6 @@ void svd::CheckConvergence()
 	}
 }
 
-*/
 
 
 void svd::BiPrint()
@@ -182,61 +176,60 @@ void svd::UVPrint()
 	V->print();
 }
 
-/*
+
 QR::QR(int n)
 {
 	P=new Matrix(n);
 	Q=new Matrix(n);
 }
 
-void QR::Iterative(int i1,int i2)
+void QR::Iterative(int i1,int i2,Vector &B1,Vector &B2)
 {
-	double d=(pow(s.B1[i2-1],2)+pow(B2[i2-1],2)-pow(A[i2],2)-pow(B[i2],2))/2;
+	double d=(pow(B1[i2-1],2)+pow(B2[i2-1],2)-pow(B1[i2],2)-pow(B2[i2],2))/2;
 	double u;
 	if(d>0)
-		u=pow(A[i2],2)-pow(B[i2],2)+d-sqrt(pow(d,2)+pow(A[i2-1],2)*pow(B[i2],2));
+		u=pow(B1[i2],2)-pow(B2[i2],2)+d-sqrt(pow(d,2)+pow(B1[i2-1],2)*pow(B2[i2],2));
 	else if(d==0)
-		u=pow(A[i2],2)-pow(B[i2],2)+d;
+		u=pow(B1[i2],2)-pow(B2[i2],2)+d;
 	else
-		u=pow(A[i2],2)-pow(B[i2],2)+d+sqrt(pow(d,2)+pow(A[i2-1],2)*pow(B[i2],2));
-	double x=pow(A[i1],2)-u;
-	double y=A[i1]*B[i1+1];
+		u=pow(B1[i2],2)-pow(B2[i2],2)+d+sqrt(pow(d,2)+pow(B1[i2-1],2)*pow(B2[i2],2));
+	double x=pow(B1[i1],2)-u;
+	double y=B1[i1]*B2[i1+1];
 	int k=i1;
 	int flag=0;
 	while(flag==0)
 	{
 		Givens a=Givens(x,y);
-		double x1=A[k+1];
-		double x2=B[k+1];
-		x=a.getc()*A[k]-a.gets()*x2;
+		double x1=B1[k+1];
+		double x2=B2[k+1];
+		x=a.getc()*B1[k]-a.gets()*x2;
 		y=-a.gets()*x1;
-		B.set(k+1,a.gets()*A[k]+a.getc()*x2);
-		A.set(k+1,a.getc()*x1);
+		B2.set(k+1,a.gets()*B1[k]+a.getc()*x2);
+		B1.set(k+1,a.getc()*x1);
 		a.update(Q,k+1);
 		if(k>i1)
-			B.set(k,a.getr());
+			B2.set(k,a.getr());
 		else
 		{
 			a=Givens(x,y);
-			A.set(k,a.getr());
+			B1.set(k,a.getr());
 			a.update(P,k+1);
 		}
 		if(k<i2-1)
 		{
-			x1=A[k+1];x2=B[k+2];
-			x=a.getc()*B[k+1]-a.gets()*x1;
+			x1=B1[k+1];x2=B2[k+2];
+			x=a.getc()*B2[k+1]-a.gets()*x1;
 			y=-a.gets()*x2;
-			A.set(k+1,a.gets()*B[k+1]+a.getc()*x1);
-			B.set(k+2,a.getc()*x2);
+			B1.set(k+1,a.gets()*B2[k+1]+a.getc()*x1);
+			B2.set(k+2,a.getc()*x2);
 			k++;
 		}
 		else
 		{
-			x1=A[i2];x2=B[i2];
-			B.set(i2,a.getc()*x2-a.gets()*x1);
-			A.set(i2,a.gets()*x2+a.getc()*x1);
+			x1=B1[i2];x2=B2[i2];
+			B2.set(i2,a.getc()*x2-a.gets()*x1);
+			B1.set(i2,a.gets()*x2+a.getc()*x1);
 			flag=1;
 		}
 	}
 }
-*/

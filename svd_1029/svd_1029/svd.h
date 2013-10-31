@@ -20,21 +20,22 @@ public:
 	}
 
 	void BiDiag();//二对角化
-	//void CheckConvergence();//收敛检验
+	void CheckConvergence();//收敛检验
 
 	void BiPrint();
 	void UVPrint();
+
 };
-/*
-class QR 
+
+class QR
 {
 private:
-	Matrix *P,*Q;
-	friend class svd;
+	
 public:
+	Matrix *P,*Q;
 	QR(int n);//构造单位阵P、Q的构造函数
-	void Iterative(int i1,int i2);//QR迭代的计算函数
+	void Iterative(int i1,int i2,Vector &B1,Vector &B2);//QR迭代的计算函数
 };
-*/
+
 
 #endif

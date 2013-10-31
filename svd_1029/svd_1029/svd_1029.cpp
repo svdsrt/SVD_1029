@@ -22,7 +22,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	test1.BiPrint();
 	test1.UVPrint();
 
-	//test1.CheckConvergence();
+	test1.CheckConvergence();
+
+	test1.BiPrint();
+	test1.UVPrint();
 
 	/*int p=0,q=0,flag=0;
 	double e=0;
