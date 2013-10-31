@@ -14,11 +14,15 @@ void svd::BiDiag()
 	static Matrix *P=new Matrix(m);
 	static Matrix *H=new Matrix(n);
 	Matrix *swap=NULL;
+	Matrix *tA1=new Matrix(m,n);
+	Matrix *tA2=new Matrix(m,n);
+	tA1->Copy(A);
+	tA2->Copy(A);
 	int num=0;
-	for(num=0;num<n-2;num++)
+	for(num=0;num<n-1;num++)
 	{
 		Vector tempU(m-num);
-		tempU.HCol(A,num);
+		tempU.HCol(*tA1,num);
 		tempU.print();
 		HouseHold T1(m-num);
 		T1.HouseHolder(tempU);
@@ -29,48 +33,52 @@ void svd::BiDiag()
 				tP.set(num+i,num+j,T1.TMatrix()->a(i,j));
 		P->Copy(*U);
 		U->DotProd(*P,tP);
+		tP.print();
+		tA2->DotProd(tP,*tA1);
 
 		Vector tempV(n-num-1);
-		tempV.HRow(A,num);
+		tempV.HRow(*tA2,num);
 		HouseHold T2(tempV.N());
 		T2.HouseHolder(tempV);
 		B2[num+1]=T2.Delta();
 		Matrix tH(n);
 		for(int i=0;i<n-num-1;i++)
 			for(int j=0;j<n-num-1;j++)
-				tH.set(num+i,num+j,T2.TMatrix()->a(i,j));
+				tH.set(num+1+i,num+1+j,T2.TMatrix()->a(i,j));
 		H->Copy(*V);
 		V->DotProd(*H,tH);
+		tH.print();
+		tA1->DotProd(*tA2,tH);
+
+		
 	}
 
-	Vector tempU1(m-n+2),tempU2(m-n+2);
-	int num2=num;
-	for(;num2<m;num2++)
-	{
-		tempU1.set(num2-num,A.a(num2,n-2));
-		tempU2.set(num2-num,A.a(num2,n-1));
-	}
-
-	HouseHold T3(m-n+2);
+	Vector tempU1(m-n+1);
+	tempU1.HCol(*tA1,n-1);
+	HouseHold T3(m-n+1);
 	T3.HouseHolder(tempU1);
-	B1[n-2]=T3.Delta();
+	B1[n-1]=T3.Delta();
 	Matrix tP3(m);
-	for(int i=0;i<m-n+2;i++)
-		for(int j=0;j<m-n+2;j++)
+	for(int i=0;i<m-n+1;i++)
+		for(int j=0;j<m-n+1;j++)
 			tP3.set(num+i,num+j,T3.TMatrix()->a(i,j));
 	P->Copy(*U);
 	U->DotProd(*P,tP3);
-	
 
-	HouseHold T4(m-n+2);
-	T4.HouseHolder(tempU2);
-	B1[n-1]=T4.Delta();
-	Matrix tP4(m);
-	for(int i=0;i<m-n+2;i++)
-		for(int j=0;j<m-n+2;j++)
-			tP4.set(num+i,num+j,T4.TMatrix()->a(i,j));
-	P->Copy(*U);
-	U->DotProd(*P,tP4);
+
+	Matrix result1(m,n);
+	Matrix result2(m,n);
+	Matrix S(m,n);
+	for(int mi=0;mi<n;mi++)
+		S.set(mi,mi,B1[mi]);
+	for(int mj=1;mj<n;mj++)
+		S.set(mj-1,mj,B2[mj]);
+	S.print();
+	Matrix U2(m,m);
+	U->Trans(U2);
+	result1.DotProd(U2,S);
+	result2.DotProd(result1,*V);
+	result2.print();
 }
 
 void svd::CheckConvergence()
@@ -79,14 +87,23 @@ void svd::CheckConvergence()
 	double e=0;
 	cout<<"输入收敛系数：";
 	cin>>e;
+	/*
+	B1.set(0,1);
+	B1.set(1,1);
+	B1.set(2,1);
 	
+	B2.set(0,0);
+	B2.set(1,1);
+	B2.set(2,1);
+	*/
 	for(int i=1;i<n;i++)
 	{
 		if(fabs(B2[i])<=e*(fabs(B1[i])+fabs(B1[i-1])))
 		{
 			B2[i]=0;
-			flag=1;
+			flag=flag*1;
 		}
+		else flag=flag*0;
 	}
 	while(flag==0)
 	{

@@ -17,11 +17,12 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 
 	svd test1;
+	
 	test1.BiDiag();
 
 	test1.BiPrint();
 	test1.UVPrint();
-
+	
 	test1.CheckConvergence();
 
 	test1.BiPrint();

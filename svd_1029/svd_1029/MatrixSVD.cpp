@@ -349,7 +349,8 @@ void Vector::HCol(Matrix &A,int k)//此处默认m>n，可能需要修改
 
 void Vector::Normalize()
 {
-	int i=0,sum=0;
+	int i=0;
+	double sum=0;
 	for(i=0;i<n;i++)
 		sum+=vector[i]*vector[i];
 	sum=sqrt(sum);

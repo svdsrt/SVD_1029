@@ -16,7 +16,7 @@ HouseHold::HouseHold()
 
 HouseHold::HouseHold(int n)
 {
-	T=new Matrix(n,n);
+	T=new Matrix(n);
 	delta=0;
 }
 
@@ -33,12 +33,12 @@ Matrix * HouseHold ::TMatrix()
 void HouseHold::HouseHolder(Vector v)
 {
 	delta=v.modular();
-	if(delta==0)
+	if(delta<0.01)
 		return; 
 	else
 	{
 		v.set(0,v[0]-delta);
-		if(v.modular()==0)
+		if(v.modular()<0.01)
 			return; 
 		else 
 		{
