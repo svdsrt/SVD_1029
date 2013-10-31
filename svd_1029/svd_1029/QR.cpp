@@ -36,15 +36,15 @@ void QR::Iterative(Vector &A,Vector &B,int i1,int i2)
 		double x2=B[k+1];
 		x=a.getc()*A[k]-a.gets()*x2;
 		y=-a.gets()*x1;
-		B[k+1]=a.gets()*A[k]+a.getc()*x2;
-		A[k+1]=a.getc()*x1;
+		B.set(k+1,a.gets()*A[k]+a.getc()*x2);
+		A.set(k+1,a.getc()*x1);
 		a.update(Q,k+1);
 		if(k>i1)
-			B[k]=a.getr();
+			B.set(k,a.getr());
 		else
 		{
 			a=Givens(x,y);
-			A[k]=a.getr();
+			A.set(k,a.getr());
 			a.update(P,k+1);
 		}
 		if(k<i2-1)
@@ -52,15 +52,15 @@ void QR::Iterative(Vector &A,Vector &B,int i1,int i2)
 			x1=A[k+1];x2=B[k+2];
 			x=a.getc()*B[k+1]-a.gets()*x1;
 			y=-a.gets()*x2;
-			A[k+1]=a.gets()*B[k+1]+a.getc()*x1;
-			B[k+2]=a.getc()*x2;
+			A.set(k+1,a.gets()*B[k+1]+a.getc()*x1);
+			B.set(k+2,a.getc()*x2);
 			k++;
 		}
 		else
 		{
 			x1=A[i2];x2=B[i2];
-			B[i2]=a.getc()*x2-a.gets()*x1;
-			A[i2]=a.gets()*x2+a.getc()*x1;
+			B.set(i2,a.getc()*x2-a.gets()*x1);
+			A.set(i2,a.gets()*x2+a.getc()*x1);
 			flag=1;
 		}
 	}

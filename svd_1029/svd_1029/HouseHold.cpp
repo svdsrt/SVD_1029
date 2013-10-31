@@ -16,8 +16,7 @@ HouseHold::HouseHold()
 
 HouseHold::HouseHold(int n)
 {
-	Matrix M(n,n);
-	T=&M;
+	T=new Matrix(n,n);
 	delta=0;
 }
 
@@ -35,23 +34,20 @@ void HouseHold::HouseHolder(Vector v)
 {
 	delta=v.modular();
 	if(delta==0)
-	{
-		Matrix temp(v.N());
-		T=&temp;
-	}
+		T=new Matrix(v.N()); 
 	else
 	{
-	    v.set(0,v[0]-delta);
-	    if(v.modular()==0)//以后要改
+		v.set(0,v[0]-delta);
+		if(v.modular()==0)//以后要改
+			T=new Matrix(v.N()); 
+		else 
 		{
-		Matrix temp(v.N());
-		T=&temp;
-	    }
-	    else 
-	    v.Normalize();
-	    v.Span(*T);
-	    Matrix temp(v.N());
-		T->NumProd(2);
-	    temp.Minus(*T);
+			v.Normalize();
+			v.Span(*T);
+			Matrix temp(v.N());
+			T->NumProd(2);
+			temp.Minus(*T);
+			T->Copy(temp);
+		}
 	}
 }

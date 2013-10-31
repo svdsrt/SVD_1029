@@ -25,6 +25,7 @@ public:
 	void NumProd(double a);//数乘
 	void DotProd(Matrix A,Matrix B);//矩阵A乘以B，输出结果
 	void Trans(Matrix &trans);//转置
+	void Copy(Matrix A);//拷贝
 
 	void set(int i,int j,double value);//修改值
 
@@ -32,8 +33,6 @@ public:
 
 	void print();//在屏幕上打印矩阵
 	void fprint();//在文件中打印矩阵
-
-	~Matrix();//析构函数
 };
 
 class Vector
@@ -64,11 +63,10 @@ public:
 	void HCol(Matrix &A,int k);//Household中取列向量的方法
 
 	void Normalize();//归一化
-	void Span(Matrix T);//生成矩阵
+	void Span(Matrix &T);//生成矩阵
 	void print();//在屏幕上打印向量
 	void fprint();//在文件中打印向量
 
-	~Vector();//析构函数
 };
 
 

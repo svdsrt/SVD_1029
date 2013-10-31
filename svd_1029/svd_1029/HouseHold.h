@@ -14,5 +14,6 @@ public:
 	Matrix * TMatrix();//·µ»Øº¯ÊýÖ¸Õë
 	
 	void HouseHolder(Vector v);
+
 };
 #endif // ! HOUSEHOLD_H

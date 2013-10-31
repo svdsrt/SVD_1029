@@ -142,10 +142,6 @@ void Vector::fprint()
 	outfile.close();
 }
 
-Vector::~Vector()
-{
-	delete vector;
-}
 //Matrix类***************************************************************
 
 Matrix::Matrix(int Nnum)
@@ -163,9 +159,9 @@ Matrix::Matrix(int Nnum)
 
 Matrix::Matrix(int Mnum,int Nnum)
 {
-	matrix=new double[Mnum*Nnum];
 	m=Mnum;
 	n=Nnum;
+	matrix=new double[Mnum*Nnum];
 	mn=m*n;
 	int i=0;
 	for(;i<mn;i++)
@@ -306,6 +302,13 @@ void Matrix::Trans(Matrix &trans)
 			trans[i*m+j]=matrix[j*n+i];
 }
 
+void Matrix::Copy(Matrix A)
+{
+	for(int i=0;i<mn;i++)
+		matrix[i]=A[i];
+}
+
+
 void Matrix::set(int i,int j,double value)
 {
 	matrix[i*n+j]=value;
@@ -329,10 +332,9 @@ void Vector::Col(Matrix &A,int k)
 
 void Vector::HRow(Matrix &A,int k)//此处默认m>n，可能需要修改
 {
-	static Vector v(n-k-1);
 	int i=0;
 	int num=A.N();
-	for(;i<v.N();i++)
+	for(;i<n;i++)
 		vector[i]=A[k*num+k+i+1];
 }
 
@@ -349,11 +351,12 @@ void Vector::Normalize()
 {
 	int i=0,sum=0;
 	for(i=0;i<n;i++)
-		sum+=vector[i];
+		sum+=vector[i]*vector[i];
+	sum=sqrt(sum);
 	for(i=0;i<n;i++)
 		vector[i]=vector[i]/sum;
 }
-void Vector::Span(Matrix T)
+void Vector::Span(Matrix &T)
 {
 	if(T.M()!=T.N())
 	{
@@ -409,9 +412,4 @@ void Matrix::fprint()
 		outfile<<"|"<<endl;
 	}
 	outfile.close();
-}
-
-Matrix::~Matrix()
-{
-	delete []matrix;
 }

@@ -8,36 +8,25 @@
 #include "MatrixSVD.h"
 #include "Givens.h"
 #include "HouseHold.h"
+#include "svd.h"
 
 using namespace std;
 
-void BiDiag(Matrix A,Vector B1,Vector B2,Matrix U, Matrix V,int m,int n);//二对角化
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	//initalize
-	int m,n;
-	Matrix A("InputMatrix1.txt");
-	m=A.M();
-	n=A.N();
-	Matrix *U=new Matrix(m,m);
-	Matrix *V=new Matrix(n,n);
-	Matrix tU(n,n),tV(n,n),temp(n,n);
-	
 
-	Vector B1(n);
-	Vector B2(n);
+	svd test1;
+	test1.BiDiag();
 
+	test1.BiPrint();
+	test1.UVPrint();
 
-	BiDiag(A,B1,B2,U,V,m,n);
-
-	B1.print();
-	B2.print();
-
+	test1.CheckConvergence();
 
 	/*int p=0,q=0,flag=0;
 	double e=0;
-	cout<<"璇疯緭鍏ヨ宸寖鍥?";
+	cout<<"";
 	cin>>e;
 	SVD svd1;
 	svd1.B1=B1;
@@ -51,9 +40,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			B2.vector[i]=0;
 			flag=1;
 		}
-	}*/
-
-	/*while(flag==0)
+	}
+	while(flag==0)
 	{
 		for(int j=n-1;j>0;j--)
 		{
@@ -96,7 +84,6 @@ int _tmain(int argc, _TCHAR* argv[])
 							for(int jj=p;jj<=q;jj++)
 								temp.matrix[ii][jj]=svd1.P.matrix[ii-p][jj-p];
 						tU.MatrixMultiply(U,temp);
-						temp.~Matrix();
 
 						temp=U;
 						U=tU;
@@ -107,7 +94,6 @@ int _tmain(int argc, _TCHAR* argv[])
 							for(int jj=p;jj<=q;jj++)
 								temp.matrix[ii][jj]=svd1.P.matrix[ii-p][jj-p];
 						tV.MatrixMultiply(V,temp);
-						temp.~Matrix();
 
 						temp=V;
 						V=tV;
@@ -127,91 +113,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	}*/
 
 
-	U->print();
-	cout<<endl;
-	B1.print();
-	B2.print();
-	cout<<endl;
-	V.print();
-
-
 	system("pause");
 	return 0;
 
 }
 
-void BiDiag(Matrix A,Vector B1,Vector B2,Matrix *U, Matrix *V,int m,int n)
-{
-	Matrix *P=new Matrix(m,m);
-	Matrix *H=new Matrix(n,n);
-	Matrix *swap=NULL;
-	int num=0;
-	for(num=0;num<n-2;num++)
-	{
-		Vector tempU(m-num);
-		tempU.HCol(A,num);
-		tempU.print();
-		HouseHold T1(m-num);
-		T1.HouseHolder(tempU);
-		B1[num]=T1.Delta();
-		Matrix tP(m);
-		for(int i=0;i<m-num;i++)
-			for(int j=0;j<m-num;j++)
-				tP.set(num+i,num+j,T1.TMatrix()->a(i,j));
-	    U->DotProd(*P,tP);
-		swap=U;
-		U=P;
-		P=swap;
-
-
-		Vector tempV(n-num-1);
-		tempV.HCol(A,num);
-		tempV.print();
-		HouseHold T2(n-1-num);
-		T2.HouseHolder(tempV);
-		B2[num+1]=T2.Delta();
-		Matrix tH(n);
-		for(int i=0;i<n-num-1;i++)
-			for(int j=0;j<n-num-1;j++)
-				tH.set(num+i,num+j,T2.TMatrix()->a(i,j));
-		V->DotProd(*H,tH);
-		swap=V;
-		V=H;
-		H=swap;
-	}
-
-	Vector tempU1(m-n+2),tempU2(m-n+2);
-	int num2=num;
-	for(;num2<m;num2++)
-	{
-		tempU1.set(num2-num,A.a(num2,n-2));
-		tempU2.set(num2-num,A.a(num2,n-1));
-	}
-	tempU1.print();
-	tempU2.print();
-
-	HouseHold T3(m-n+2);
-	T3.HouseHolder(tempU1);
-		B1[n-2]=T3.Delta();
-		Matrix tP3(m);
-		for(int i=0;i<n-num-1;i++)
-			for(int j=0;j<n-num-1;j++)
-				tP3.set(num+i,num+j,T3.TMatrix()->a(i,j));
-		U->DotProd(*P,tP3);
-		//还要吗？
-		swap=U;
-		U=P;
-		P=swap;
-
-	HouseHold T3(m-n+2);
-	T3.HouseHolder(tempU2);
-		B1[n-1]=T3.Delta();
-		Matrix tP3(m);
-		for(int i=0;i<n-num-1;i++)
-			for(int j=0;j<n-num-1;j++)
-				tP3.set(num+i,num+j,T3.TMatrix()->a(i,j));
-		U->DotProd(*P,tP3);
-		swap=U;
-		U=P;
-		P=swap;
-}
