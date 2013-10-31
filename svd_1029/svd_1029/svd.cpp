@@ -35,6 +35,7 @@ void svd::BiDiag()
 		U->DotProd(*P,tP);
 		tP.print();
 		tA2->DotProd(tP,*tA1);
+		tA2->scanzero();
 
 		Vector tempV(n-num-1);
 		tempV.HRow(*tA2,num);
@@ -49,7 +50,7 @@ void svd::BiDiag()
 		V->DotProd(*H,tH);
 		tH.print();
 		tA1->DotProd(*tA2,tH);
-
+		tA1->scanzero();
 		
 	}
 
@@ -127,7 +128,6 @@ void svd::CheckConvergence()
 						double x=B2[i+1],y=B1[i+1];
 						B2[i+1]=0;
 						int l=1;
-
 						while(l<q-i)
 						{
 							Givens g(y,x);

@@ -26,6 +26,7 @@ public:
 	void DotProd(Matrix A,Matrix B);//矩阵A乘以B，输出结果
 	void Trans(Matrix &trans);//转置
 	void Copy(Matrix A);//拷贝
+	void scanzero();//将小于0的数变为0
 
 	void set(int i,int j,double value);//修改值
 

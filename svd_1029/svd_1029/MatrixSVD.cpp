@@ -278,6 +278,15 @@ void Matrix::DotProd(Matrix A,Matrix B)
 		}
 }
 
+void Matrix::scanzero()
+{
+	for(int i=0;i<m;i++)
+		for(int j=0;j<n;j++)
+			if(matrix[i*n+j]<0.01)
+				matrix[i*n+j]=0;
+}
+
+
 void Matrix::Trans(Matrix &trans)
 {
 	if(m!=trans.N())

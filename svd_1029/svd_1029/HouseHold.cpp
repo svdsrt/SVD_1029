@@ -33,12 +33,12 @@ Matrix * HouseHold ::TMatrix()
 void HouseHold::HouseHolder(Vector v)
 {
 	delta=v.modular();
-	if(delta<0.01)
+	if(delta<0.0001)
 		return; 
 	else
 	{
 		v.set(0,v[0]-delta);
-		if(v.modular()<0.01)
+		if(v.modular()<0.0001)
 			return; 
 		else 
 		{
@@ -48,6 +48,7 @@ void HouseHold::HouseHolder(Vector v)
 			T->NumProd(2);
 			temp.Minus(*T);
 			T->Copy(temp);
+			
 		}
 	}
 }
