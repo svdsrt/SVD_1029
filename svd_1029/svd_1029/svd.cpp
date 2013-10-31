@@ -27,14 +27,11 @@ void svd::BiDiag()
 		for(int i=0;i<m-num;i++)
 			for(int j=0;j<m-num;j++)
 				tP.set(num+i,num+j,T1.TMatrix()->a(i,j));
-		
-		tP.print();
 		P->Copy(*U);
 		U->DotProd(*P,tP);
 
 		Vector tempV(n-num-1);
 		tempV.HRow(A,num);
-		tempV.print();
 		HouseHold T2(tempV.N());
 		T2.HouseHolder(tempV);
 		B2[num+1]=T2.Delta();
@@ -53,8 +50,6 @@ void svd::BiDiag()
 		tempU1.set(num2-num,A.a(num2,n-2));
 		tempU2.set(num2-num,A.a(num2,n-1));
 	}
-	tempU1.print();
-	tempU2.print();
 
 	HouseHold T3(m-n+2);
 	T3.HouseHolder(tempU1);
@@ -63,7 +58,6 @@ void svd::BiDiag()
 	for(int i=0;i<m-n+2;i++)
 		for(int j=0;j<m-n+2;j++)
 			tP3.set(num+i,num+j,T3.TMatrix()->a(i,j));
-	tP3.print();
 	P->Copy(*U);
 	U->DotProd(*P,tP3);
 	
@@ -75,7 +69,6 @@ void svd::BiDiag()
 	for(int i=0;i<m-n+2;i++)
 		for(int j=0;j<m-n+2;j++)
 			tP4.set(num+i,num+j,T4.TMatrix()->a(i,j));
-	tP4.print();
 	P->Copy(*U);
 	U->DotProd(*P,tP4);
 }

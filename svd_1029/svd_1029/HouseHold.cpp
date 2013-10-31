@@ -38,7 +38,7 @@ void HouseHold::HouseHolder(Vector v)
 	else
 	{
 		v.set(0,v[0]-delta);
-		if(v.modular()==0)//以后要改
+		if(v.modular()==0)
 			return; 
 		else 
 		{
