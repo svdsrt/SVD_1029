@@ -34,12 +34,12 @@ void HouseHold::HouseHolder(Vector v)
 {
 	delta=v.modular();
 	if(delta==0)
-		T=new Matrix(v.N()); 
+		return; 
 	else
 	{
 		v.set(0,v[0]-delta);
 		if(v.modular()==0)//以后要改
-			T=new Matrix(v.N()); 
+			return; 
 		else 
 		{
 			v.Normalize();
