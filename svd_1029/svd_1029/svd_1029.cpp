@@ -34,8 +34,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	test1.CheckConvergence();
 
-	test1.BiPrint();
-	test1.UVPrint();
+	//test1.BiPrint();
+	//test1.UVPrint();
 
 	end=clock();
 	cout<<end-start<<endl;

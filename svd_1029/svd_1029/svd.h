@@ -34,8 +34,6 @@ public:
 
 	void BiDiag();//二对角化
 	void function1();
-	void function2();
-	void function3();
 	void function4();
 	void function5();
 	void CheckConvergence();//收敛检验
@@ -47,8 +45,6 @@ public:
 
 class QR
 {
-private:
-	
 public:
 	Matrix *P,*Q;
 	QR(int n);//构造单位阵P、Q的构造函数

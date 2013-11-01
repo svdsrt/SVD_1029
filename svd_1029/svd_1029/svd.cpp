@@ -93,43 +93,33 @@ void svd::function1()
 		}
 		else flag=flag*0;
 	}
-	function2();
-}
-	
-void svd::function2()
-{
 	int flag3=0;
-	for(int j=0;j<B1.N();j++)
+	for(int j=0;j<B2.N();j++)
 		if(B2[j]!=0)
 		{
 			flag3=1;
 		}
-	if(flag3==0) 
-	{
-		BiPrint();
-		UVPrint();
-		cout<<"cao"<<endl;
-		system("pause");
-		exit(0);
-	}
-	for(int j=n-1;j>0;j--)
-	{
-		if(B2[j]!=0)
+		if(flag3==0) 
 		{
-			flag=0;
-			q=j;
-			for(int k=q;k>0;k--)
-				if(B2[k]==0)
-					p=k;
+			BiPrint();
+			UVPrint();
+			cout<<"cao"<<endl;
+			system("pause");
+			exit(0);
 		}
-	}
-}
-	
-void svd::function3()
-{
+		for(int j=n-1;j>0;j--)
+		{
+			if(B2[j]!=0)
+			{
+				flag=0;
+				q=j;
+				for(int k=q;k>0;k--)
+					if(B2[k]==0)
+						p=k;
+			}
+		}
 	int flag2=0;
-	int i=0;
-	for(i=p;p<q;p++)
+	for(i=p;i<q;i++)
 	{
 		if(B1[i]<=e*B1.Max())
 			flag2++;
@@ -144,22 +134,21 @@ void svd::function3()
 	}
 	else
 	{
-
-		QR or(p-q+1);
+		QR or(q-p+1);
 		or.Iterative(p,q,B1,B2);
 		Matrix temp1(n);
 		for(int ii=p;ii<=q;ii++)
 			for(int jj=p;jj<=q;jj++)
 				temp1.set(ii,jj,or.P->a(ii-p,jj-p));
-		U->Copy(tU);
+		tU.Copy(*U);
 		U->DotProd(tU,temp1);
 
 		Matrix temp2(n);
 		for(int ii=p;ii<=q;ii++)
 			for(int jj=p;jj<=q;jj++)
 				temp2.set(ii,jj,or.Q->a(ii-p,jj-p));
-		V->Copy(tV);
-		tV.DotProd(tV,temp);
+		tV.Copy(*V);
+		V->DotProd(tV,temp);
 		function1();
 	}
 
@@ -172,7 +161,7 @@ void svd::function4()
 	g.update(U,i,i+l);
 	function5();
 }
-	
+
 void svd:: function5()
 {
 	if(l<q-i)
@@ -197,15 +186,6 @@ void svd::CheckConvergence()
 	double e=0;
 	cout<<"输入收敛系数：";
 	cin>>e;
-	/*
-	B1.set(0,1);
-	B1.set(1,1);
-	B1.set(2,1);
-
-	B2.set(0,0);
-	B2.set(1,1);
-	B2.set(2,1);
-	*/
 	function1();	
 }
 
@@ -246,7 +226,8 @@ void QR::Iterative(int i1,int i2,Vector &B1,Vector &B2)
 	int flag=0;
 	while(flag==0)
 	{
-		Givens a=Givens(x,y);
+		Givens a;
+		a.set(x,y);
 		double x1=B1[k+1];
 		double x2=B2[k+1];
 		x=a.getc()*B1[k]-a.gets()*x2;
@@ -258,7 +239,7 @@ void QR::Iterative(int i1,int i2,Vector &B1,Vector &B2)
 			B2.set(k,a.getr());
 		else
 		{
-			a=Givens(x,y);
+			a.set(x,y);
 			B1.set(k,a.getr());
 			a.update(P,k+1);
 		}
