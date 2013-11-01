@@ -9,6 +9,7 @@
 #include "Givens.h"
 #include "HouseHold.h"
 #include "svd.h"
+#include <time.h>
 
 using namespace std;
 
@@ -16,17 +17,28 @@ using namespace std;
 int _tmain(int argc, _TCHAR* argv[])
 {
 
+	double start,end;
+	start=clock();
+	
 	svd test1;
 	
 	test1.BiDiag();
 
 	test1.BiPrint();
 	test1.UVPrint();
+
+	end=clock();
+	cout<<end-start<<endl;
+
+	start=clock();
 	
 	test1.CheckConvergence();
 
 	test1.BiPrint();
 	test1.UVPrint();
+
+	end=clock();
+	cout<<end-start<<endl;
 
 	system("pause");
 	return 0;

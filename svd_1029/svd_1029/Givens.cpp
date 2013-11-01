@@ -84,6 +84,17 @@ void Givens::update(Matrix *X,int k)
 	}
 }
 
+void Givens::update(Matrix *X,int k,int l)
+{
+	int i=0;
+	for(i=0;i<X->N();i++)
+	{
+		double t=X->a(i,k);
+		X->set(i,k,c*t-s*X->a(i,l));
+		X->set(i,l,s*t+c*X->a(i,l));
+	}
+}
+
 double Givens::getc()
 {
 	return c;

@@ -51,7 +51,7 @@ void svd::BiDiag()
 		tH.print();
 		tA1->DotProd(*tA2,tH);
 		tA1->scanzero();
-		
+
 	}
 
 	Vector tempU1(m-n+1);
@@ -82,6 +82,115 @@ void svd::BiDiag()
 	result2.print();
 }
 
+void svd::function1()
+{
+	for(int j=1;j<n;j++)
+	{
+		if(fabs(B2[j])<=e*(fabs(B1[j])+fabs(B1[j-1])))
+		{
+			B2[j]=0;
+			flag=flag*1;
+		}
+		else flag=flag*0;
+	}
+	function2();
+}
+	
+void svd::function2()
+{
+	int flag3=0;
+	for(int j=0;j<B1.N();j++)
+		if(B2[j]!=0)
+		{
+			flag3=1;
+		}
+	if(flag3==0) 
+	{
+		BiPrint();
+		UVPrint();
+		cout<<"cao"<<endl;
+		system("pause");
+		exit(0);
+	}
+	for(int j=n-1;j>0;j--)
+	{
+		if(B2[j]!=0)
+		{
+			flag=0;
+			q=j;
+			for(int k=q;k>0;k--)
+				if(B2[k]==0)
+					p=k;
+		}
+	}
+}
+	
+void svd::function3()
+{
+	int flag2=0;
+	int i=0;
+	for(i=p;p<q;p++)
+	{
+		if(B1[i]<=e*B1.Max())
+			flag2++;
+	}
+	if(flag2>0)
+	{
+		B1[i]=0;
+		double x=B2[i+1],y=B1[i+1];
+		B2[i+1]=0;
+		int l=1;
+		function4();
+	}
+	else
+	{
+
+		QR or(p-q+1);
+		or.Iterative(p,q,B1,B2);
+		Matrix temp1(n);
+		for(int ii=p;ii<=q;ii++)
+			for(int jj=p;jj<=q;jj++)
+				temp1.set(ii,jj,or.P->a(ii-p,jj-p));
+		U->Copy(tU);
+		U->DotProd(tU,temp1);
+
+		Matrix temp2(n);
+		for(int ii=p;ii<=q;ii++)
+			for(int jj=p;jj<=q;jj++)
+				temp2.set(ii,jj,or.Q->a(ii-p,jj-p));
+		V->Copy(tV);
+		tV.DotProd(tV,temp);
+		function1();
+	}
+
+}
+
+void svd::function4()
+{
+	Givens g(y,x);
+	B1[i+l]=g.getr();
+	g.update(U,i,i+l);
+	function5();
+}
+	
+void svd:: function5()
+{
+	if(l<q-i)
+	{
+		x=g.gets()*B2[i+l+1];
+		B2[i+l+1]=g.getc()*B2[i+l+1];
+		y=B1[i+l+1];
+		l++;
+		function4();
+	}
+	else
+		function1();
+}
+
+
+
+
+
 void svd::CheckConvergence()
 {
 	int p=0,q=0,flag=0;
@@ -92,84 +201,12 @@ void svd::CheckConvergence()
 	B1.set(0,1);
 	B1.set(1,1);
 	B1.set(2,1);
-	
+
 	B2.set(0,0);
 	B2.set(1,1);
 	B2.set(2,1);
 	*/
-	for(int i=1;i<n;i++)
-	{
-		if(fabs(B2[i])<=e*(fabs(B1[i])+fabs(B1[i-1])))
-		{
-			B2[i]=0;
-			flag=flag*1;
-		}
-		else flag=flag*0;
-	}
-	while(flag==0)
-	{
-		for(int j=n-1;j>0;j--)
-		{
-			if(B2[j]!=0)
-			{
-				flag=0;
-				q=j;
-				for(int k=q;k>0;k--)
-					if(B2[k]==0)
-						p=k;
-				double max=B1.Max();
-
-				int flag2=0;
-				for(int i=p;p<q;p++)
-					if(B1[i]<=e*max)
-					{
-						flag2++;
-						B1[i]=0;
-						double x=B2[i+1],y=B1[i+1];
-						B2[i+1]=0;
-						int l=1;
-						while(l<q-i)
-						{
-							Givens g(y,x);
-							B1[i+l]=g.getr();
-							
-							g.update(U,i);
-							x=g.gets()*B2[i+l+1];
-							B2[i+l+1]=g.getc()*B2[i+l+1];
-							y=B1[i+l+1];
-							l++;
-						}
-					}
-					if(flag2==0)
-					{
-						QR or(p-q+1);
-						or.Iterative(p,q,B1,B2);
-						Matrix temp1(n);
-						for(int ii=p;ii<=q;ii++)
-							for(int jj=p;jj<=q;jj++)
-								temp1.set(ii,jj,or.P->a(ii-p,jj-p));
-						U->Copy(tU);
-						U->DotProd(tU,temp1);
-
-						Matrix temp2(n);
-						for(int ii=p;ii<=q;ii++)
-							for(int jj=p;jj<=q;jj++)
-								temp2.set(ii,jj,or.Q->a(ii-p,jj-p));
-						V->Copy(tV);
-						tV.DotProd(tV,temp);
-					}
-			}
-			for(int i=1;i<n;i++)
-			{
-				if(fabs(B2[i])<=e*(fabs(B1[i])+fabs(B1[i-1])))
-				{
-					B2[i]=0;
-					flag=1;
-				}
-			}
-
-		}
-	}
+	function1();	
 }
 
 
