@@ -51,7 +51,7 @@ Givens::Givens(double cvalue,double svalue,double rvalue)
 void Givens::set(double x,double y)
 {
 	double tao;
-	if(y==0)
+	if(y==0)//GAI
 	{
 		c=1;
 		s=1;

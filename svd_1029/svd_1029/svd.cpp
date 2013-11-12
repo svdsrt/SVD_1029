@@ -35,7 +35,7 @@ void svd::BiDiag()
 		U->DotProd(*P,tP);
 		tP.print();
 		tA2->DotProd(tP,*tA1);
-		tA2->scanzero();
+		//tA2->scanzero();
 
 		Vector tempV(n-num-1);
 		tempV.HRow(*tA2,num);
@@ -50,7 +50,7 @@ void svd::BiDiag()
 		V->DotProd(*H,tH);
 		tH.print();
 		tA1->DotProd(*tA2,tH);
-		tA1->scanzero();
+		//tA1->scanzero();
 
 	}
 

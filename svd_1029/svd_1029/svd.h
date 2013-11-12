@@ -16,7 +16,7 @@ private:
 protected:
 	Vector B1,B2;
 public:
-	svd():A("InputMatrix1.txt"),tU(A.N()),tV(A.N()),temp(A.N()),B1(A.N()),B2(A.N()),g(0,0)
+	svd():A("InputMatrix4.txt"),tU(A.N()),tV(A.N()),temp(A.N()),B1(A.N()),B2(A.N()),g(0,0)
 	{
 		flag=0;
 		m=A.M();
