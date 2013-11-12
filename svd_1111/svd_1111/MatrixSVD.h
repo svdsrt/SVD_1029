@@ -84,6 +84,8 @@ Matrix& mult( const Matrix &A, const Matrix &B,Matrix &C );
 Matrix trT( const Matrix& );
 
 void printMatrix(const Matrix &A );
+void inputMatrix(int name,Matrix &A);
+void fprintMatrix(int name,const Matrix &A);
 
 // arithmetic operators
 

@@ -4,6 +4,7 @@
 #include <fstream>
 #include "MatrixSVD.h"
 #include <string>
+#include <strstream>
 #include <math.h>
 #include "Vector.h"
 
@@ -167,13 +168,6 @@ double& Matrix::operator()( int row, int column )
 
 const double& Matrix::operator()( int row, int column ) const
 {
-#ifdef BOUNDS_CHECK
-	assert( 1 <= row );
-	assert( row <= nRow ) ;
-	assert( 1 <= column);
-	assert( column <= nColumn );
-#endif
-
 	return  prow1[row][column];
 }
 
@@ -222,10 +216,6 @@ long Matrix::size() const
 
 int Matrix::dim( int dimension ) const
 {
-#ifdef BOUNDS_CHECK
-	assert( dimension >= 1);
-	assert( dimension <= 2);
-#endif
 
 	if( dimension == 1 )
 		return nRow;
@@ -757,3 +747,53 @@ void printMatrix(const Matrix &A )
 
 }
 
+void inputMatrix(int name,Matrix &A)
+{
+	string namestring;
+	strstream ss;
+	string s;
+	ss<<name;
+	ss>>s;
+	namestring="input/"+s;
+	namestring=namestring+".txt";
+	ifstream infile;
+	infile.open(namestring);
+	
+	
+	int rows, columns;
+
+	infile >> rows >> columns;
+
+	if( !( rows == A.rows() && columns == A.cols() ) )
+		A.resize( rows, columns );
+
+	for( int i=0; i<rows; ++i )
+		for( int j=0; j<columns; ++j )
+			infile >> A[i][j];
+
+}
+
+void fprintMatrix(int name,const Matrix &A)	
+{
+	string namestring;
+	strstream ss;
+	string s;
+	ss<<name;
+	ss>>s;
+	namestring="output/"+s;
+	namestring=namestring+".txt";
+	ofstream outfile;
+	outfile.open(namestring,ios_base::out | ios_base::app);
+
+	int rows = A.rows();
+	int columns = A.cols();
+
+	outfile << "size: " << rows << " by " << columns << "\n";
+	for( int i=0; i<rows; ++i )
+	{
+		for( int j=0; j<columns; ++j )
+			outfile << A[i][j] << "\t";
+		outfile << "\n";
+	}
+	outfile.close();
+}
